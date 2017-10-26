@@ -1,6 +1,8 @@
 <template>
-   <section id="input">
-        <textarea id="name-list" v-model="nameList" @change="formatList"></textarea>
+    <div class="container">
+    <section id="input">
+        <div class="group-length"><b>{{ nameListLength }}</b> namn i listan</div>
+        <textarea id="name-list" v-model="updateList" @change="validateList"></textarea>
         <div class="group-name" @click="groupName = !groupName">
             <div id="input-group-name" :class="{ selected: groupName }"></div>
             <h3>Ge grupperna ett kickass gruppnamn!</h3>
@@ -30,6 +32,7 @@
         </div>
         <a href="#" @click="go" id="create-groups">Slump me some groups</a>
     </section>
+    </div>
 </template>
 
 <script>
@@ -40,7 +43,6 @@ export default {
             groupName: true,
             groupLeader: false,
             groupType: 0,
-            nameList: null,
             groupSize: 2
         }
     },
@@ -49,23 +51,40 @@ export default {
             this.groupSize = e.target.innerHTML;
         },
         go(){
+
             let data = {
                 groupName: this.groupName,
-                groupSize: this.groupSize,
+                groupLeader: this.groupLeader,
+                groupSize: this.groupSize*1,
                 groupType: this.groupType,
-                nameList: this.nameList
+                nameList: this.$store.state.nameList
             }
-            console.log(data);
 
-            Router.push('output')
+            this.$store.commit('toggleState');
+            this.$store.commit('setActiveGroupie', data);
+            this.$router.push({name: 'wt-output'});
+            
         },
-        formatList(){
-            let arr = this.nameList.split('\n');
-            arr = arr.filter(entry => entry.trim() != '');
-            this.updateNameList(arr);
+        validateList(){
+            let list = this.$store.state.nameList;
+            let arr = list.filter(entry => entry.trim() != '');
+            let newList = arr.join(`\n`);
+            this.$store.commit("updateNameList", newList);
+        }
+    },
+    computed: {
+        updateList: {
+            get: function () {
+                let list = this.$store.state.nameList;
+                let newList = list.join(`\n`);
+                return newList;
+            },
+            set: function (newValue) {
+                this.$store.commit("updateNameList", newValue)
+            }
         },
-        updateNameList(arr){
-            this.nameList = arr.join('\n');
+        nameListLength(){
+            return this.$store.state.nameList.length;
         }
     }
 }
@@ -73,8 +92,13 @@ export default {
 
 <style scoped>
 
+.container {
+    width:100vw;
+    height: 100vh;
+    display:flex;
+}
+
 #input {
-    background: white;
     border-radius: 3px;
     width: 400px;
     box-sizing: border-box;
@@ -82,8 +106,9 @@ export default {
     display: grid;
     position: relative;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 360px 40px 40px 40px 40px 80px;
+    grid-template-rows: 40px 360px 40px 40px 40px 40px 80px;
     grid-template-areas: 
+    "group-length group-length"
     "name-list name-list"
     "group-name group-name"
     "group-leader group-leader"
@@ -92,20 +117,28 @@ export default {
     "create-groups create-groups"
 }
 
+#input .group-length {
+        grid-area: group-length;
+        color: rgba(0,0,0,.4);
+        padding: 1rem .5rem;
+        font-size: .8rem;
+}
+
 #name-list {
     grid-area: name-list;
     border: none;
     resize: none;
-    padding: 0 3rem;
+    padding: 0 1rem;
     box-sizing: border-box;
     font-size: .8rem;
     line-height: 30px;
     height: 360px;
-    background: url('/static/row.png');
+    background: #fff url('/static/row.png');
     background-attachment: local;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }
+
 
 #input h3 {
     margin: 0;

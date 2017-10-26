@@ -1,11 +1,59 @@
 <template>
     <nav>
-        <a v-for="option in options" href="#" :id="option.id">
+        <a href="#" @click="showGroups" v-if="!checkState">
             <div class="icon">
-                <img :src="option.iconUrl" :alt="option.tip">
+                <img src="/static/icon-nav.svg" alt="Sparade Grupper">
             </div>
             <div class="tip">
-                <span class="label">{{ option.tip }}</span>
+                <span class="label">Hantera Grupper</span>
+            </div>
+        </a>
+         <a href="#" v-if="checkState" @click="back">
+            <div class="icon">
+                <img src="/static/icon-back.svg" alt="Tillbaka">
+            </div>
+            <div class="tip">
+                <span class="label">Tillbaka</span>
+            </div>
+        </a>
+        <a href="#" v-if="checkState">
+            <div class="icon">
+                <img src="/static/icon-edit.svg" alt="Sparade Grupper">
+            </div>
+            <div class="tip">
+                <span class="label">Editera Grupper</span>
+            </div>
+        </a>
+        <a href="#" v-if="checkState">
+            <div class="icon">
+                <img src="/static/icon-remix.svg" alt="Blanda Grupper">
+            </div>
+            <div class="tip">
+                <span class="label">Blanda Grupper</span>
+            </div>
+        </a>
+        <a href="#" v-if="checkState">
+            <div class="icon">
+                <img src="/static/icon-tvargrupp.svg" alt="Skapa tvärgrupper">
+            </div>
+            <div class="tip">
+                <span class="label">Skapa tvärgrupper</span>
+            </div>
+        </a>
+        <a href="#" v-if="checkState">
+            <div class="icon">
+                <img src="/static/icon-screenshot.svg" alt="Spara som bild">
+            </div>
+            <div class="tip">
+                <span class="label">Spara som bild</span>
+            </div>
+        </a>
+        <a href="#" v-if="checkState">
+            <div class="icon">
+                <img src="/static/icon-link.svg" alt="Spara som länk">
+            </div>
+            <div class="tip">
+                <span class="label">Spara som länk</span>
             </div>
         </a>
     </nav>
@@ -15,39 +63,20 @@
 export default {
     name: 'wt-menu',
     data(){
-        return {
-            options: [
-                {
-                    id: `groups`,
-                    iconUrl: `/static/icon-nav.svg`,
-                    tip: `Sparade grupper`
-                },
-                {
-                    id: `edit`,
-                    iconUrl: `/static/icon-edit.svg`,
-                    tip: `Ändra i grupper`
-                },
-                {
-                    id: `remix`,
-                    iconUrl: `/static/icon-remix.svg`,
-                    tip: `Blanda grupper`
-                },
-                {
-                    id: `screenshot`,
-                    iconUrl: `/static/icon-screenshot.svg`,
-                    tip: `Spara som bild`
-                },
-                {
-                    id: `link`,
-                    iconUrl: `/static/icon-link.svg`,
-                    tip: `Spara som länk`
-                }
-            ]
-        }
+       return {}
     },
     methods: {
         showGroups(){
-            store.changeState(`overlay`);
+            this.$store.commit(`toggleShowGroups`);
+        },
+        back(){
+            this.$store.commit('toggleState');
+            this.$router.push({name: 'wt-input'});
+        }
+    },
+    computed: {
+        checkState(){
+            return this.$store.state.stateOutput;   
         }
     }
 }
@@ -58,20 +87,15 @@ export default {
 nav {
     position: fixed;
     margin: 2rem 0 0 2rem;
-    display: flex;
-    flex-direction: column;
-    width: 15rem;
+    width: 15vw;
     height: 300px;
-}
-
-nav.input {
-    height: 60px;
 }
 
 nav a {
     display: flex;
     flex: 1;
     align-items: center;
+    margin: 0 0 .5rem 0;
 }
 
 nav a .icon {

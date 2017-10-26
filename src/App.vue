@@ -1,18 +1,33 @@
 <template>
   <div id="app">
-    <wtmenu/>
-    <router-view/>
+
+  <transition name="fade">
+    <overlay v-if="showOverlay"/>
+  </transition>
+  
+  <wtmenu/>
+
+  <router-view/>
+
+
   </div>
 </template>
 
 <script>
 
 import wtmenu from '@/components/Menu'
+import overlay from '@/components/Groups'
 
 export default {
   name: 'app',
+  computed: {
+    showOverlay(){ 
+      return this.$store.state.showGroups;
+    }
+  },
   components: {
-    wtmenu
+    wtmenu,
+    overlay
   }
 }
 </script>
@@ -36,4 +51,12 @@ body, html {
     height: 100vh;
     display: flex;
 }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0
+}
+
 </style>
