@@ -1,28 +1,69 @@
 <template>
-    <section id="output">
-        <section class="card-container">
-            <article v-for="(group, index) in activeGroupie.groups" class="card-group">
-                <h1 class="card-title"><span v-if="group.name">{{ group.name }}</span><span v-else>Grupp {{ index+1 }}</span></h1>
-                <ul class="card-members">
-                    <li class="member" v-for="member of group.members">{{ member }}</li>
-                </ul>
-            </article>
+     <div class="container">
+        <wtmenu/>
+        <section id="output">
+            <section class="card-container">
+                <article v-for="(group, index) in activeGroupie.groups" class="card-group">
+                    <h1 class="card-title"><span v-if="group.name">{{ group.name }}</span><span v-else>Grupp {{ index+1 }}</span></h1>
+                    <ul class="card-members">
+                        <li class="member" v-for="member of group.members">{{ member }}</li>
+                    </ul>
+                </article>
+            </section>
         </section>
-    </section>
+    </div>
 </template>
 
 <script>
+
+import wtmenu from '@/components/Menu';
+
 export default {
     name: 'wt-output',
+    components: {
+        wtmenu
+    },
     data(){
         return {
             activeGroup: null
         }
     },
     methods:{
+        collectMembers(){
+            let collectedMembers = [];
+            let members = document.querySelectorAll('.member');
+            
+            for(let member of members){
+                collectedMembers.push(member.innerHTML);
+            }
+
+            return collectedMembers;
+            
+        },
         collectGroups(){
-            let arr = this.activeGroup;
-            console.log(arr);
+            
+            let remixedGroup = {
+                groupName: `remixed group`,
+                groupsMembers: []
+            };
+
+            let groups = document.querySelectorAll(`.card-group`);
+            for(let group of groups){
+            
+            let tempGroup = {};
+
+            let title = group.querySelector('.card-title span').innerHTML;
+            let members = group.querySelectorAll('.member');
+            
+            for(let member of members){
+                console.log(member.innerHTML);
+            }
+
+            }
+        },
+        edit(){
+            this.collectMembers();
+            
         }
     },
     computed: {
@@ -32,14 +73,12 @@ export default {
             if(groupie.groupType === 0){
                 let results = generateGroupTypeMembers(groupie.nameList, groupie.groupSize, groupie.groupName, groupie.groupLeader);
                 this.activeGroup = results;
-                console.log(results);
                 return results;
             }
 
             if(groupie.groupType === 1){
                 let results = generateGroupTypeGroups(groupie.nameList, groupie.groupSize, groupie.groupName, groupie.groupLeader);
                 this.activeGroup = results;
-                console.log(results);
                 return results;
             }
         }
@@ -120,7 +159,6 @@ function generateGroupTypeMembers(namesArr,groupSize, groupName, groupLeader){
 
         activeGroup.groups.push(gr)
     }
-    console.log(activeGroup);
     return activeGroup;
 };
 
@@ -210,7 +248,7 @@ function getGroupName() {
     width: 60vw;
     margin: auto;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap:1rem;
 }
 

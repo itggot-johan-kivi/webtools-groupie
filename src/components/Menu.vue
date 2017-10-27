@@ -16,7 +16,7 @@
                 <span class="label">Tillbaka</span>
             </div>
         </a>
-        <a href="#" v-if="checkState">
+        <a href="#" v-if="checkState" @click="edit">
             <div class="icon">
                 <img src="/static/icon-edit.svg" alt="Sparade Grupper">
             </div>
@@ -72,6 +72,9 @@ export default {
         back(){
             this.$store.commit('toggleState');
             this.$router.push({name: 'wt-input'});
+        },
+        edit(){
+            this.$parent.$options.methods.edit();
         }
     },
     computed: {
@@ -87,7 +90,7 @@ export default {
 nav {
     position: fixed;
     margin: 2rem 0 0 2rem;
-    width: 15vw;
+    width: 16vw;
     height: 300px;
 }
 

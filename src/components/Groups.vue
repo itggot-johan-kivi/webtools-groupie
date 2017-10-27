@@ -41,21 +41,24 @@ export default {
             this.closeOverlay();
         },
         removeListItem(index){
-            this.$store.commit(`removeGroup`, index);
+            let q = confirm(`Reeeeeally?`);
+            if(q !== false){
+                this.$store.commit(`removeGroup`, index);
+            }
         },
         saveGroup(){
             let name = prompt(`Döp gruppen`);
-            if (name === null) {
-                return;
-            }
+                if (name !== null) {
 
-            let obj = {
-                groupName: name,
-                groupMembers: this.$store.state.nameList
-            }
+                let obj = {
+                    groupName: name,
+                    groupMembers: this.$store.state.nameList
+                }
 
-            this.$store.commit(`updateGroupieObj`, obj);     
-        },
+                this.$store.commit(`updateGroupieObj`, obj);     
+            
+            }
+       },
         closeOverlay(){
             this.$store.commit(`toggleShowGroups`);
         }

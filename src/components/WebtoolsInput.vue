@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+    <wtmenu/>
     <section id="input">
         <div class="group-length"><b>{{ nameListLength }}</b> namn i listan</div>
         <textarea id="name-list" v-model="updateList" @change="validateList"></textarea>
@@ -36,8 +37,14 @@
 </template>
 
 <script>
+
+import wtmenu from '@/components/Menu';
+
 export default {
     name: 'wt-input',
+    components: {
+        wtmenu
+    },
     data() {
         return {
             groupName: true,

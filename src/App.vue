@@ -4,8 +4,6 @@
   <transition name="fade">
     <overlay v-if="showOverlay"/>
   </transition>
-  
-  <wtmenu/>
 
   <router-view/>
 
@@ -15,18 +13,20 @@
 
 <script>
 
-import wtmenu from '@/components/Menu'
+
 import overlay from '@/components/Groups'
 
 export default {
   name: 'app',
+  data(){
+    return {}
+  },
   computed: {
     showOverlay(){ 
       return this.$store.state.showGroups;
     }
   },
   components: {
-    wtmenu,
     overlay
   }
 }
