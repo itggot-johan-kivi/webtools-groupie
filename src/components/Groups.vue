@@ -121,6 +121,14 @@ aside#overlay a#add-group:hover {
     color: #222;
 }
 
+.remove-group {
+    display: inline-block;
+    margin: .75rem 0 0 0;
+    padding: 3px;
+    text-decoration: none;
+    color: rgba(255,255,255,.6);
+}
+
 .remove-group:hover {
     display: inline-block;
     margin: .75rem 0 0 0;
@@ -128,14 +136,6 @@ aside#overlay a#add-group:hover {
     color: rgba(0,0,0,1);
     background: #EB6A6A;
     border-radius: 3px;
-}
-
-.remove-group {
-    display: inline-block;
-    margin: .5rem 0 0 0;
-    padding: 3px;
-    text-decoration: none;
-    color: rgba(255,255,255,.6);
 }
 
 aside#overlay .grid-container {

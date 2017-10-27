@@ -94,18 +94,35 @@ export default {
         },
         crossGroups(){
             let groups = this.collectGroups();
+            
             let crossGroupsArr = [];
+            
+            for(let n=0, m=groups.groups[0].groupMembers.length; n<m; n++){
+                
+                let y = {
+                    name: `Tvärgrupp ${n+1}`,
+                    members: []
+                }
 
-
-            for(let i=0, j = groups.groups[0].length; i < j; i++) {
-                    console.log(`varv ${i}`);
-                    for(let member of groups.groups[i].groupMembers){
-                        crossGroupsArr[i] = member;
+                groups.groups.forEach(function(v,i) {
+                    if(v.groupMembers[n]){
+                        y.members[i] = v.groupMembers[n].replace(`*`,``);
                     }
+                })
+                crossGroupsArr.push(y);
             }
-            console.log(crossGroupsArr);   
-        }
 
+            let data = {
+                groupType: 2,
+                groupName: true,
+                name: `Tvärgrupper`,
+                groups: crossGroupsArr
+            }
+
+            this.$store.commit('setActiveGroupie', data);
+
+            
+        }
     },
     computed: {
         activeGroupie(){
@@ -121,6 +138,11 @@ export default {
                 let results = generateGroupTypeGroups(groupie.nameList, groupie.groupSize, groupie.groupName, groupie.groupLeader);
                 return results;
             }
+
+             if(groupie.groupType === 2){
+                return groupie;
+            }
+
         }
     }
 };
