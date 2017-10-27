@@ -24,7 +24,7 @@
                 <span class="label">Editera Grupper</span>
             </div>
         </a>
-        <a href="#" v-if="checkState">
+        <a href="#" v-if="checkState" @click="remix">
             <div class="icon">
                 <img src="/static/icon-remix.svg" alt="Blanda Grupper">
             </div>
@@ -32,7 +32,7 @@
                 <span class="label">Blanda Grupper</span>
             </div>
         </a>
-        <a href="#" v-if="checkState">
+        <a href="#" v-if="checkState" @click="crossGroup">
             <div class="icon">
                 <img src="/static/icon-tvargrupp.svg" alt="Skapa tvärgrupper">
             </div>
@@ -74,7 +74,13 @@ export default {
             this.$router.push({name: 'wt-input'});
         },
         edit(){
-            this.$parent.$options.methods.edit();
+            this.$emit(`do`, `edit`);
+        },
+        remix(){
+            this.$emit(`do`, `remix`);
+        },
+        crossGroup(){
+            this.$emit(`do`, `cross`);
         }
     },
     computed: {

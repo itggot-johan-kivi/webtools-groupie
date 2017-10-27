@@ -1,9 +1,9 @@
 <template>
      <div class="container">
-        <wtmenu/>
+        <wtmenu @do="proxy"/>
         <section id="output">
             <section class="card-container">
-                <article v-for="(group, index) in activeGroupie.groups" class="card-group">
+                <article v-for="(group, index) in activeGroupie.groups" class="card-group" :class="{ edit: editMode }">
                     <h1 class="card-title"><span v-if="group.name">{{ group.name }}</span><span v-else>Grupp {{ index+1 }}</span></h1>
                     <ul class="card-members">
                         <li class="member" v-for="member of group.members">{{ member }}</li>
@@ -25,10 +25,16 @@ export default {
     },
     data(){
         return {
-            activeGroup: null
+            activeGroup: null,
+            editMode: false
         }
     },
     methods:{
+        proxy(e){
+           if (e === `edit`)  { this.edit(); }
+           if (e === `remix`) { this.remix(); }
+           if (e === `cross`) { this.crossGroups(); }
+        },
         collectMembers(){
             let collectedMembers = [];
             let members = document.querySelectorAll('.member');
@@ -38,47 +44,81 @@ export default {
             }
 
             return collectedMembers;
-            
+
         },
         collectGroups(){
             
-            let remixedGroup = {
-                groupName: `remixed group`,
-                groupsMembers: []
+            let remixedGroupie = {
+                groupieName: `remixed group`,
+                groups: []
             };
 
             let groups = document.querySelectorAll(`.card-group`);
+            
             for(let group of groups){
-            
-            let tempGroup = {};
 
-            let title = group.querySelector('.card-title span').innerHTML;
-            let members = group.querySelectorAll('.member');
-            
-            for(let member of members){
-                console.log(member.innerHTML);
-            }
+                let title = group.querySelector('.card-title span').innerHTML;
+                let members = group.querySelectorAll('.member');
 
+
+                let tempGroup = {
+                    groupName: title,
+                    groupMembers: [] 
+                };
+                
+                for(let member of members){
+                    tempGroup.groupMembers.push(member.innerHTML);
+                }
+
+                remixedGroupie.groups.push(tempGroup);
             }
+            return remixedGroupie;
         },
         edit(){
-            this.collectMembers();
-            
+            this.editMode = !this.editMode;     
+        },
+        remix(){
+
+            let groupie = this.$store.state.activeGroupie;
+
+             let data = {
+                groupName: groupie.groupName,
+                groupLeader: groupie.groupLeader,
+                groupSize: groupie.groupSize*1,
+                groupType: groupie.groupType,
+                nameList: shuffle(this.collectMembers())
+            }
+
+            this.$store.commit('setActiveGroupie', data);
+
+        },
+        crossGroups(){
+            let groups = this.collectGroups();
+            let crossGroupsArr = [];
+
+
+            for(let i=0, j = groups.groups[0].length; i < j; i++) {
+                    console.log(`varv ${i}`);
+                    for(let member of groups.groups[i].groupMembers){
+                        crossGroupsArr[i] = member;
+                    }
+            }
+            console.log(crossGroupsArr);   
         }
+
     },
     computed: {
         activeGroupie(){
+            
             let groupie = this.$store.state.activeGroupie;
 
             if(groupie.groupType === 0){
                 let results = generateGroupTypeMembers(groupie.nameList, groupie.groupSize, groupie.groupName, groupie.groupLeader);
-                this.activeGroup = results;
                 return results;
             }
 
             if(groupie.groupType === 1){
                 let results = generateGroupTypeGroups(groupie.nameList, groupie.groupSize, groupie.groupName, groupie.groupLeader);
-                this.activeGroup = results;
                 return results;
             }
         }
@@ -120,7 +160,7 @@ function generateGroupTypeGroups(namesArr, groupSize, groupName, groupLeader){
 
         activeGroup.groups.push(gr)
     }
-    console.log(activeGroup);
+
     return activeGroup;
 };
 
@@ -256,6 +296,11 @@ function getGroupName() {
     background: white;
     border-radius: 3px;
     box-shadow: 3px 3px 20px rgba(0,0,0,.05);
+}
+
+
+.card-group.edit .card-title {
+    background: #EB6A6A;
 }
 
 .card-title {
