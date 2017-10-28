@@ -34,6 +34,8 @@ export default {
            if (e === `edit`)  { this.edit(); }
            if (e === `remix`) { this.remix(); }
            if (e === `cross`) { this.crossGroups(); }
+           if (e === `screenshot`) { this.takeScreenshot(); }
+           if (e === `link`) { this.createLink(); }
         },
         collectMembers(){
             let collectedMembers = [];
@@ -122,6 +124,12 @@ export default {
             this.$store.commit('setActiveGroupie', data);
 
             
+        },
+        takeScreenshot(){
+            
+        },
+        createLink(){
+            let obj = this.collectGroups();
         }
     },
     computed: {
@@ -147,8 +155,8 @@ export default {
     }
 };
 
-/* GLOBAL FUNCTIONS */
 
+/* GLOBAL FUNCTIONS */
 function generateGroupTypeGroups(namesArr, groupSize, groupName, groupLeader){
 
     // Create Groupie Object
@@ -159,6 +167,9 @@ function generateGroupTypeGroups(namesArr, groupSize, groupName, groupLeader){
     
     // Get Group Names
     let randName = getGroupName();
+
+    // Do the shuffle
+    shuffle(namesArr);
 
     // Get even chunks
     let groups = chunk(namesArr, groupSize, true);
@@ -186,7 +197,8 @@ function generateGroupTypeGroups(namesArr, groupSize, groupName, groupLeader){
     return activeGroup;
 };
 
-function generateGroupTypeMembers(namesArr,groupSize, groupName, groupLeader){
+
+function generateGroupTypeMembers(namesArr, groupSize, groupName, groupLeader){
     
     // Create Groupie Object
     let activeGroup = {
@@ -197,6 +209,8 @@ function generateGroupTypeMembers(namesArr,groupSize, groupName, groupLeader){
     // Get Group Names
     let randName = getGroupName();
     
+    // Do the shuffle
+    shuffle(namesArr);
 
     // Get even chunks
     let groups = chunk(namesArr, Math.ceil(namesArr.length/groupSize), true);
@@ -263,7 +277,8 @@ function chunk(a, n, balanced) {
     }
 
     return out;
-}
+};
+
 
 // Fisher Yates shuffle
 function shuffle(array) {
@@ -276,7 +291,6 @@ function shuffle(array) {
     return array;
 };
 
-// Group numbers
 
 // Group names
 function getGroupName() {
@@ -307,7 +321,7 @@ function getGroupName() {
 }
 
 .card-container {
-    width: 60vw;
+    width: 70vw;
     margin: auto;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -330,7 +344,7 @@ function getGroupName() {
     padding: 0;
     background: #888;
     color: rgba(255,255,255,1);
-    height: 4rem;
+    height: 3rem;
     font-size: 1.2rem;
     font-weight: 500;
     display: flex;
@@ -347,12 +361,13 @@ function getGroupName() {
 }
 
 .card-members li {
-    padding: .8rem;
-    border:1px solid rgba(0,0,0,.05);
+    padding: .5rem .75rem;
+    border-bottom:1px solid rgba(0,0,0,.05);
     color: #555;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    font-size: .8rem;
 }
 
 .card-members li:last-child {

@@ -40,7 +40,7 @@
                 <span class="label">Skapa tvärgrupper</span>
             </div>
         </a>
-        <a href="#" v-if="checkState">
+        <a href="#" v-if="checkState" @click="screenshot">
             <div class="icon">
                 <img src="/static/icon-screenshot.svg" alt="Spara som bild">
             </div>
@@ -48,7 +48,7 @@
                 <span class="label">Spara som bild</span>
             </div>
         </a>
-        <a href="#" v-if="checkState">
+        <a href="#" v-if="checkState" @click="link">
             <div class="icon">
                 <img src="/static/icon-link.svg" alt="Spara som länk">
             </div>
@@ -81,6 +81,12 @@ export default {
         },
         crossGroup(){
             this.$emit(`do`, `cross`);
+        },
+        screenshot(){
+            this.$emit(`do`, `screenshot`);
+        },
+        link(){
+            this.$emit(`do`, `link`);
         }
     },
     computed: {
