@@ -17,6 +17,7 @@
 <script>
 
 import wtmenu from '@/components/Menu';
+import html2canvas from 'html2canvas';
 
 export default {
     name: 'wt-output',
@@ -126,7 +127,16 @@ export default {
             
         },
         takeScreenshot(){
-            
+            let now = Date.now();
+            html2canvas(document.querySelector(`.card-container`),{
+                background: `#eee`,
+                onrendered:(canvas) => {
+                    let a = document.createElement('a');
+                    a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+                    a.download = `${now}_groupie.jpg`;
+                    a.click();
+                    } 
+            });
         },
         createLink(){
             let obj = this.collectGroups();
@@ -321,10 +331,11 @@ function getGroupName() {
 }
 
 .card-container {
-    width: 70vw;
+    max-width: 1000px;
     margin: auto;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    padding: 1rem;
+    grid-template-columns: repeat(3, 1fr);
     grid-gap:1rem;
 }
 
@@ -341,7 +352,7 @@ function getGroupName() {
 
 .card-title {
     margin: 0;
-    padding: 0;
+    padding: 0 1rem;
     background: #888;
     color: rgba(255,255,255,1);
     height: 3rem;
