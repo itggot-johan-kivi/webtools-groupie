@@ -1,7 +1,7 @@
 <template>
     <aside id="overlay">
         <a href="#" id="close" @click="closeOverlay"><img src="/static/icon-close.svg" alt="close"></a>
-        <main class="container">
+        <main class="centercontainer">
             <a href="#" id="add-group" @click="saveGroup">Spara grupp</a>
             <section class="grid-container">
                 <article v-for="(group, index) in savedGroups">
@@ -96,8 +96,7 @@ aside#overlay a#close:hover {
 }
 
 
-aside#overlay .container {
-    flex: 1;
+aside#overlay .centercontainer {
     margin: auto;
     max-width: 900px;
 }
@@ -106,6 +105,7 @@ aside#overlay .container {
 aside#overlay a#add-group {
     color: white;
     width: 120px;
+    height: 30px;
     border:1px solid white;
     padding: .75rem 2rem;
     text-align: center;

@@ -51,20 +51,22 @@ body, html {
     width: 100vw;
     height: 100vh;
     display: flex;
+    position: absolute;
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .2s
+  transition: opacity .2s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 
-.fade-enter-active, .fade-leave-active {
+.zoom-enter-active, .zoom-leave-active {
   transition: all .2s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0
+.zoom-enter, .zoom-leave-to {
+  opacity: 0;
+  transform: scale3d(1.4,1.4,0);
 }
 
 </style>

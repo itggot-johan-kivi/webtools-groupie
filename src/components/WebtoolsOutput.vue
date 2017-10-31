@@ -141,9 +141,9 @@ export default {
 
         },
         removeCard(e){
-
-            if(e.path[0].childElementCount < 1){
-                e.path[1].remove();
+            
+            if(e.from.childElementCount < 1){
+                e.from.parentElement.remove();
             };
 
         },
@@ -334,11 +334,6 @@ function getGroupName() {
 };
 
 
-function uid(len) {
-  len = len || 10;
-  return Math.random().toString(35).substr(2, len);
-};
-
 </script>
 
 <style>
@@ -353,6 +348,7 @@ function uid(len) {
     width: 100vw;
     height: 100vh;
     display: flex;
+    position: absolute;
 }
 
 .card-container {

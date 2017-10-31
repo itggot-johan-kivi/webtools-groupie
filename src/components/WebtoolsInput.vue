@@ -121,7 +121,7 @@ export default {
     "group-leader group-leader"
     "group-style-members group-style-groups"
     "scale scale"
-    "create-groups create-groups"
+    "create-groups create-groups";
 }
 
 #input .group-length {
@@ -140,6 +140,7 @@ export default {
     font-size: .8rem;
     line-height: 30px;
     height: 360px;
+    width: 100%;
     background: #fff url('/static/row.png');
     background-attachment: local;
     border-top-left-radius: 3px;
