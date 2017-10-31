@@ -16,7 +16,7 @@
                 <span class="label">Tillbaka</span>
             </div>
         </a>
-        <a href="#" v-if="checkState" @click="remix">
+        <a href="#" v-if="checkState && !cross" @click="remix">
             <div class="icon">
                 <img src="/static/icon-remix.svg" alt="Blanda Grupper">
             </div>
@@ -24,7 +24,7 @@
                 <span class="label">Blanda Grupper</span>
             </div>
         </a>
-        <a href="#" v-if="checkState" @click="crossGroup">
+        <a href="#" v-if="checkState && !cross" @click="crossGroup">
             <div class="icon">
                 <img src="/static/icon-tvargrupp.svg" alt="Skapa tvärgrupper">
             </div>
@@ -56,6 +56,7 @@ export default {
     name: 'wt-menu',
     data(){
        return {
+           cross: false
         }
     },
     methods: {
@@ -71,6 +72,7 @@ export default {
         },
         crossGroup(){
             this.$emit(`do`, `cross`);
+            this.cross = true;
         },
         screenshot(){
             this.$emit(`do`, `screenshot`);

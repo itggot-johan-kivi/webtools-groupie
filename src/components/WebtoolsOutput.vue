@@ -30,8 +30,7 @@ export default {
     },
     data(){
         return {
-            activeGroup: null,
-            cross: false
+            activeGroup: null
         }
     },
     methods:{
@@ -40,11 +39,6 @@ export default {
            if (e === `cross`) { this.cross = true; this.crossGroups(); }
            if (e === `screenshot`) { this.takeScreenshot(); }
            if (e === `link`) { this.createLink(); }
-        },
-        removeCard(e){
-            if(e.path[0].childElementCount<1){
-                e.path[2].remove();
-            }
         },
         collectMembers(){
             
@@ -148,13 +142,16 @@ export default {
             });
 
         },
+        removeCard(e){
+            if(e.path[0].childElementCount<1){
+                e.path[2].remove();
+            }
+        },
         createLink(){
             let obj = this.collectGroups();
             let name = prompt(`Döp din Groupie`);
                 obj.groupieName = name;
-
             
-
             console.log(obj);
         }
     },
