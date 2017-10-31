@@ -288,4 +288,15 @@ export default {
 #input #create-groups:active {
     background: rgba(0,0,0,1);
 }
+
+
+/* MOBILE */
+@media screen and (max-width:650px) {
+
+ #input {
+    
+ }
+
+}
+
 </style>

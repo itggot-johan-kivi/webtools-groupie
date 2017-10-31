@@ -5,8 +5,9 @@
     <overlay v-if="showOverlay"/>
   </transition>
 
-  <router-view/>
-
+  <transition name="fade">
+    <router-view/>
+  </transition>
 
   </div>
 </template>

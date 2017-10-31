@@ -6,9 +6,7 @@
                 <article v-for="(group, index) in activeGroupie.groups" class="card-group">
                     <h1 class="card-title"><span v-if="group.name">{{ group.name }}</span><span v-else>Grupp {{ index+1 }}</span></h1>
                     <draggable class="card-members" :options="{group:'member'}" @remove="removeCard">
-                        <transition-group>
                             <div class="member" v-for="member of group.members" :key="member">{{ member }}</div>
-                        </transition-group>
                     </draggable>
                 </article>
             </section>
@@ -138,14 +136,16 @@ export default {
                     a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
                     a.download = `${now}_groupie.jpg`;
                     a.click();
-                    } 
+                } 
             });
 
         },
         removeCard(e){
-            if(e.path[0].childElementCount<1){
-                e.path[2].remove();
-            }
+
+            if(e.path[0].childElementCount < 1){
+                e.path[1].remove();
+            };
+
         },
         createLink(){
             let obj = this.collectGroups();
@@ -170,7 +170,7 @@ export default {
                 return results;
             }
 
-             if(groupie.groupType === 2){
+            if(groupie.groupType === 2){
                 return groupie;
             }
 
@@ -344,6 +344,12 @@ function uid(len) {
 <style>
 
 #output {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+.container {
     width: 100vw;
     height: 100vh;
     display: flex;
