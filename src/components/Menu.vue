@@ -16,14 +16,6 @@
                 <span class="label">Tillbaka</span>
             </div>
         </a>
-        <a href="#" v-if="checkState" @click="edit">
-            <div class="icon">
-                <img src="/static/icon-edit.svg" alt="Sparade Grupper">
-            </div>
-            <div class="tip">
-                <span class="label">Editera Grupper</span>
-            </div>
-        </a>
         <a href="#" v-if="checkState" @click="remix">
             <div class="icon">
                 <img src="/static/icon-remix.svg" alt="Blanda Grupper">
@@ -63,7 +55,8 @@
 export default {
     name: 'wt-menu',
     data(){
-       return {}
+       return {
+        }
     },
     methods: {
         showGroups(){
@@ -72,9 +65,6 @@ export default {
         back(){
             this.$store.commit('toggleState');
             this.$router.push({name: 'wt-input'});
-        },
-        edit(){
-            this.$emit(`do`, `edit`);
         },
         remix(){
             this.$emit(`do`, `remix`);

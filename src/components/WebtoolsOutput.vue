@@ -3,11 +3,13 @@
         <wtmenu @do="proxy"/>
         <section id="output">
             <section class="card-container">
-                <article v-for="(group, index) in activeGroupie.groups" class="card-group" :class="{ edit: editMode }">
+                <article v-for="(group, index) in activeGroupie.groups" class="card-group">
                     <h1 class="card-title"><span v-if="group.name">{{ group.name }}</span><span v-else>Grupp {{ index+1 }}</span></h1>
-                    <ul class="card-members">
-                        <li class="member" v-for="member of group.members">{{ member }}</li>
-                    </ul>
+                    <draggable class="card-members" :options="{group:'member'}" @remove="removeCard">
+                        <transition-group>
+                            <div class="member" v-for="member of group.members" :key="member">{{ member }}</div>
+                        </transition-group>
+                    </draggable>
                 </article>
             </section>
         </section>
@@ -18,32 +20,39 @@
 
 import wtmenu from '@/components/Menu';
 import html2canvas from 'html2canvas';
+import draggable from 'vuedraggable';
 
 export default {
     name: 'wt-output',
     components: {
-        wtmenu
+        wtmenu,
+        draggable
     },
     data(){
         return {
             activeGroup: null,
-            editMode: false
+            cross: false
         }
     },
     methods:{
         proxy(e){
-           if (e === `edit`)  { this.edit(); }
            if (e === `remix`) { this.remix(); }
-           if (e === `cross`) { this.crossGroups(); }
+           if (e === `cross`) { this.cross = true; this.crossGroups(); }
            if (e === `screenshot`) { this.takeScreenshot(); }
            if (e === `link`) { this.createLink(); }
         },
+        removeCard(e){
+            if(e.path[0].childElementCount<1){
+                e.path[2].remove();
+            }
+        },
         collectMembers(){
+            
             let collectedMembers = [];
             let members = document.querySelectorAll('.member');
             
             for(let member of members){
-                collectedMembers.push(member.innerHTML);
+                collectedMembers.push(member.innerHTML.replace(`*`,``));
             }
 
             return collectedMembers;
@@ -51,8 +60,8 @@ export default {
         },
         collectGroups(){
             
-            let remixedGroupie = {
-                groupieName: `remixed group`,
+            let collectedGroupie = {
+                groupieName: `GroupieObj`,
                 groups: []
             };
 
@@ -63,22 +72,20 @@ export default {
                 let title = group.querySelector('.card-title span').innerHTML;
                 let members = group.querySelectorAll('.member');
 
-
                 let tempGroup = {
                     groupName: title,
                     groupMembers: [] 
                 };
-                
+
                 for(let member of members){
                     tempGroup.groupMembers.push(member.innerHTML);
-                }
+                };
 
-                remixedGroupie.groups.push(tempGroup);
+                collectedGroupie.groups.push(tempGroup);
             }
-            return remixedGroupie;
-        },
-        edit(){
-            this.editMode = !this.editMode;     
+
+            return collectedGroupie;
+        
         },
         remix(){
 
@@ -96,6 +103,7 @@ export default {
 
         },
         crossGroups(){
+
             let groups = this.collectGroups();
             
             let crossGroupsArr = [];
@@ -124,10 +132,11 @@ export default {
 
             this.$store.commit('setActiveGroupie', data);
 
-            
         },
         takeScreenshot(){
+
             let now = Date.now();
+            
             html2canvas(document.querySelector(`.card-container`),{
                 background: `#eee`,
                 onrendered:(canvas) => {
@@ -137,9 +146,16 @@ export default {
                     a.click();
                     } 
             });
+
         },
         createLink(){
             let obj = this.collectGroups();
+            let name = prompt(`Döp din Groupie`);
+                obj.groupieName = name;
+
+            
+
+            console.log(obj);
         }
     },
     computed: {
@@ -320,6 +336,12 @@ function getGroupName() {
     return shuffle(names);
 };
 
+
+function uid(len) {
+  len = len || 10;
+  return Math.random().toString(35).substr(2, len);
+};
+
 </script>
 
 <style>
@@ -369,9 +391,12 @@ function getGroupName() {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
 }
 
-.card-members li {
+.card-members .member {
     padding: .5rem .75rem;
     border-bottom:1px solid rgba(0,0,0,.05);
     color: #555;
@@ -381,9 +406,19 @@ function getGroupName() {
     font-size: .8rem;
 }
 
-.card-members li:last-child {
+.card-members .member:hover {
+    cursor: grab;
+}
+
+.card-members .member:last-child {
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px; 
+}
+
+
+.sortable-chosen, .sortable-ghost {
+    background: rgba(235,106,106,.25) !important;
+    cursor: grabbing !important;
 }
 
 </style>
