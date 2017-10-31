@@ -96,6 +96,7 @@ nav {
     margin: 2rem 0 0 2rem;
     width: 16vw;
     height: 300px;
+    z-index: 9;
 }
 
 nav a {

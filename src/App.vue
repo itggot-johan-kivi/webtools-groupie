@@ -5,7 +5,7 @@
     <overlay v-if="showOverlay"/>
   </transition>
 
-  <transition name="fade">
+  <transition name="zoom">
     <router-view/>
   </transition>
 
@@ -55,6 +55,13 @@ body, html {
 
 .fade-enter-active, .fade-leave-active {
   transition: opacity .2s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: all .2s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0
