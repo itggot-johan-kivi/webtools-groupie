@@ -4,7 +4,7 @@
         <section id="output">
             <section class="card-container">
                 <article v-for="(group, index) in activeGroupie.groups" class="card-group">
-                    <h1 class="card-title"><span v-if="group.name">{{ group.name }}</span><span v-else>Grupp {{ index+1 }}</span></h1>
+                    <h1 class="card-title" @click="pickRandomMember"><span v-if="group.name">{{ group.name }}</span><span v-else>Grupp {{ index+1 }}</span></h1>
                     <draggable class="card-members" :options="{group:'member'}" @remove="removeCard">
                             <div class="member" v-for="member of group.members" :key="member" @click="removeMember">{{ member }}</div>
                     </draggable>
@@ -37,6 +37,19 @@ export default {
            if (e === `cross`) { this.cross = true; this.crossGroups(); }
            if (e === `screenshot`) { this.takeScreenshot(); }
            if (e === `link`) { this.createLink(); }
+        },
+        pickRandomMember(e){
+            
+            let parent = e.srcElement.parentElement;
+            let childs = parent.querySelectorAll(`.member`);
+            
+            for(let child of childs){
+                child.classList.remove(`picked`);
+            }
+
+            let slump = Math.floor(Math.random()*childs.length);
+            childs[slump].classList.add(`picked`);
+
         },
         removeMember(e){
 
@@ -450,6 +463,11 @@ function getGroupName() {
 .sortable-chosen, .sortable-ghost {
     background: rgba(235,106,106,.25) !important;
     cursor: grabbing !important;
+}
+
+.picked {
+    font-weight: 600;
+    color: rgba(235,106,106,1) !important;
 }
 
 </style>
