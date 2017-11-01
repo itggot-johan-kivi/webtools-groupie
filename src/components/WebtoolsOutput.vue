@@ -39,10 +39,11 @@ export default {
            if (e === `link`) { this.createLink(); }
         },
         removeMember(e){
-            console.log(e);
+
             if(e.altKey){
                 e.srcElement.remove();
-            }
+            };
+
         },
         collectMembers(){
             
@@ -96,6 +97,22 @@ export default {
                 groupType: groupie.groupType,
                 nameList: shuffle(this.collectMembers())
             }
+
+            // Add animation
+            let cardGroup = document.querySelectorAll('.card-group');
+            
+            for(let card of cardGroup){
+                card.classList.add(`zoom`);
+            }
+
+            setTimeout(()=>{
+                let cardGroup = document.querySelectorAll('.card-group');
+            
+                for(let card of cardGroup){
+                    card.classList.remove(`zoom`);
+                }
+
+            },300);
 
             this.$store.commit('setActiveGroupie', data);
 
@@ -156,7 +173,7 @@ export default {
         createLink(){
             let obj = this.collectGroups();
             let name = prompt(`Döp din Groupie`);
-                obj.groupieName = name;
+            obj.groupieName = name;
             
             console.log(obj);
         }
@@ -372,6 +389,15 @@ function getGroupName() {
     box-shadow: 3px 3px 20px rgba(0,0,0,.05);
 }
 
+.card-group.zoom {
+    animation: minizoom .2s ease;
+    animation-fill-mode: forwards;
+}
+
+@keyframes minizoom {
+    0% { transform:scale(1.2); opacity: 0; }
+    100% { transform:scale(1); opacity: 1; }
+}
 
 .card-group.edit .card-title {
     background: #EB6A6A;
