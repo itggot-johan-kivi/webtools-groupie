@@ -1,13 +1,13 @@
 <template>
   <div id="app">
 
-  <transition name="fade">
-    <overlay v-if="showOverlay"/>
-  </transition>
+    <transition name="fade">
+      <overlay v-if="showOverlay"/>
+    </transition>
 
-  <transition name="zoom">
-    <router-view/>
-  </transition>
+    <transition name="zoom">
+      <router-view/>
+    </transition>
 
   </div>
 </template>
@@ -57,6 +57,7 @@ body, html {
 .fade-enter-active, .fade-leave-active {
   transition: opacity .2s;
 }
+
 .fade-enter, .fade-leave-to {
   opacity: 0;
 }
@@ -64,6 +65,7 @@ body, html {
 .zoom-enter-active, .zoom-leave-active {
   transition: all .2s;
 }
+
 .zoom-enter, .zoom-leave-to {
   opacity: 0;
   transform: scale3d(1.4,1.4,0);

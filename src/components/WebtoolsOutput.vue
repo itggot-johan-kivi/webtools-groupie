@@ -6,7 +6,7 @@
                 <article v-for="(group, index) in activeGroupie.groups" class="card-group">
                     <h1 class="card-title"><span v-if="group.name">{{ group.name }}</span><span v-else>Grupp {{ index+1 }}</span></h1>
                     <draggable class="card-members" :options="{group:'member'}" @remove="removeCard">
-                            <div class="member" v-for="member of group.members" :key="member">{{ member }}</div>
+                            <div class="member" v-for="member of group.members" :key="member" @click="removeMember">{{ member }}</div>
                     </draggable>
                 </article>
             </section>
@@ -37,6 +37,12 @@ export default {
            if (e === `cross`) { this.cross = true; this.crossGroups(); }
            if (e === `screenshot`) { this.takeScreenshot(); }
            if (e === `link`) { this.createLink(); }
+        },
+        removeMember(e){
+            console.log(e);
+            if(e.altKey){
+                e.srcElement.remove();
+            }
         },
         collectMembers(){
             

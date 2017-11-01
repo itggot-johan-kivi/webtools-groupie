@@ -140,7 +140,7 @@ export default {
     font-size: .8rem;
     line-height: 30px;
     height: 360px;
-    width: 100%;
+    width: 100% !important;
     background: #fff url('/static/row.png');
     background-attachment: local;
     border-top-left-radius: 3px;
