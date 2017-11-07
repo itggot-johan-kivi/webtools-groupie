@@ -58,18 +58,25 @@ export default {
             this.groupSize = e.target.innerHTML;
         },
         go(){
+            if(this.$store.state.nameList.length > 1){
+            
+                let data = {
+                    groupName: this.groupName,
+                    groupLeader: this.groupLeader,
+                    groupSize: this.groupSize*1,
+                    groupType: this.groupType,
+                    nameList: this.$store.state.nameList
+                }
 
-            let data = {
-                groupName: this.groupName,
-                groupLeader: this.groupLeader,
-                groupSize: this.groupSize*1,
-                groupType: this.groupType,
-                nameList: this.$store.state.nameList
+                this.$store.commit('toggleState');
+                this.$store.commit('setActiveGroupie', data);
+                this.$router.push({name: 'wt-output'});
+                
+            } else {
+        
+                alert(`Textrutan är tom!`);
+            
             }
-
-            this.$store.commit('toggleState');
-            this.$store.commit('setActiveGroupie', data);
-            this.$router.push({name: 'wt-output'});
             
         },
         validateList(){
@@ -287,16 +294,6 @@ export default {
 
 #input #create-groups:active {
     background: rgba(0,0,0,1);
-}
-
-
-/* MOBILE */
-@media screen and (max-width:650px) {
-
- #input {
-    
- }
-
 }
 
 </style>
