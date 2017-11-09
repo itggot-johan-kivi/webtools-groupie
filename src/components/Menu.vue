@@ -40,14 +40,6 @@
                 <span class="label">Spara som bild</span>
             </div>
         </a>
-        <a href="#" v-if="checkState" @click="link">
-            <div class="icon">
-                <img src="/static/icon-link.svg" alt="Spara som länk">
-            </div>
-            <div class="tip">
-                <span class="label">Spara som länk</span>
-            </div>
-        </a>
     </nav>
 </template>
 

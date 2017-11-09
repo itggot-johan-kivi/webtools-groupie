@@ -41,7 +41,7 @@ export default {
             this.closeOverlay();
         },
         removeListItem(index){
-            let q = confirm(`Reeeeeally?`);
+            let q = confirm(`Vill du verkligen ta bort gruppen?`);
             if(q !== false){
                 this.$store.commit(`removeGroup`, index);
             }
@@ -81,6 +81,7 @@ export default {
 </script>
 
 <style>
+
 
 aside#overlay {
     position: absolute;

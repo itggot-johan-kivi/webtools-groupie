@@ -4,7 +4,12 @@
         <section id="output">
             <section class="card-container">
                 <article v-for="(group, index) in activeGroupie.groups" class="card-group">
-                    <h1 class="card-title" @click="pickRandomMember"><span v-if="group.name">{{ group.name }}</span><span v-else>Grupp {{ index+1 }}</span></h1>
+                    <h1 class="card-title">
+                        <span class="pick-member" @click="pickRandomMember">Slumpa namn inom grupp</span>
+                        <span v-if="group.name">{{ group.name }}</span>
+                        <span v-else>Grupp {{ index+1 }}</span>
+                        
+                    </h1>
                     <draggable class="card-members" :options="{group:'member'}" @remove="removeCard">
                             <div class="member" v-for="member of group.members" :key="member" @click="removeMember">{{ member }}</div>
                     </draggable>
@@ -28,7 +33,8 @@ export default {
     },
     data(){
         return {
-            activeGroup: null
+            activeGroup: null,
+            remove: false
         }
     },
     methods:{
@@ -36,11 +42,11 @@ export default {
            if (e === `remix`) { this.remix(); }
            if (e === `cross`) { this.cross = true; this.crossGroups(); }
            if (e === `screenshot`) { this.takeScreenshot(); }
-           if (e === `link`) { this.createLink(); }
+          // if (e === `link`) { this.createLink(); }
         },
         pickRandomMember(e){
-            
-            let parent = e.srcElement.parentElement;
+
+            let parent = e.srcElement.parentElement.parentElement;
             let childs = parent.querySelectorAll(`.member`);
             
             for(let child of childs){
@@ -429,6 +435,28 @@ function getGroupName() {
     justify-content: center;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
+    position: relative;
+}
+.card-title span {
+    display: inline-block;
+    position: absolute;
+}
+
+.card-title .pick-member {
+    width: 100%;
+    height: 100%;
+    background: #EB6A6A;
+    z-index: 9;
+    font-size: .8rem;
+    font-weight: 300;
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+.card-title:hover .pick-member {
+display: flex;
+cursor: pointer;
 }
 
 .card-members {
@@ -441,7 +469,7 @@ function getGroupName() {
 }
 
 .card-members .member {
-    padding: .5rem .75rem;
+    padding: .5rem 1.5rem;
     border-bottom:1px solid rgba(0,0,0,.05);
     color: #555;
     text-overflow: ellipsis;
@@ -449,6 +477,7 @@ function getGroupName() {
     overflow: hidden;
     font-size: .8rem;
 }
+
 
 .card-members .member:hover {
     cursor: grab;

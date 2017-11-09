@@ -104,7 +104,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 .container {
     width:100vw;
@@ -118,7 +118,6 @@ export default {
     box-sizing: border-box;
     margin: auto;
     display: grid;
-    position: relative;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 40px 360px 40px 40px 40px 40px 80px;
     grid-template-areas: 
@@ -128,7 +127,7 @@ export default {
     "group-leader group-leader"
     "group-style-members group-style-groups"
     "scale scale"
-    "create-groups create-groups" !important;
+    "create-groups create-groups";
 }
 
 #input .group-length {
@@ -140,6 +139,7 @@ export default {
 
 #name-list {
     grid-area: name-list;
+    -webkit-appearance: none;
     border: none;
     resize: none;
     padding: 0 1rem;
@@ -147,10 +147,17 @@ export default {
     font-size: .8rem;
     line-height: 30px;
     height: 360px;
+    width: 400px;
     background: #fff url('/static/row.png');
     background-attachment: local;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
+}
+
+
+#name-list:focus {
+    outline: none;
+    -webkit-appearance: none;
 }
 
 
