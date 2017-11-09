@@ -152,7 +152,7 @@ aside#overlay a#add-group:hover {
 
 aside#overlay .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(240px, auto));
     grid-auto-rows: 120px;
     grid-gap: 1rem;
 }
