@@ -110,7 +110,6 @@ aside#overlay a#close:hover {
 
 aside#overlay .centercontainer {
     margin: auto;
-    max-width: 900px;
 }
 
 

@@ -74,7 +74,7 @@ export default {
                 
             } else {
         
-                alert(`Textrutan är tom!`);
+                alert(`Skriv in några fler namn.`);
             
             }
             
