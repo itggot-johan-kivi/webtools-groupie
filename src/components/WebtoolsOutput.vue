@@ -172,7 +172,7 @@ export default {
             let now = Date.now();
             
             html2canvas(document.querySelector(`.card-container`),{
-                background: `#eee`,
+                background: `#A66FC7`,
                 onrendered:(canvas) => {
                     let a = document.createElement('a');
                     a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
@@ -398,7 +398,7 @@ function getGroupName() {
     margin: auto;
     display: grid;
     padding: 1rem;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
     grid-gap:1rem;
 }
 
@@ -425,7 +425,7 @@ function getGroupName() {
 .card-title {
     margin: 0;
     padding: 0 1rem;
-    background: #888;
+    background: #4B4A57;
     color: rgba(255,255,255,1);
     height: 3rem;
     font-size: 1.2rem;
@@ -445,7 +445,7 @@ function getGroupName() {
 .card-title .pick-member {
     width: 100%;
     height: 100%;
-    background: #EB6A6A;
+    background: #25252B;
     z-index: 9;
     font-size: .8rem;
     font-weight: 300;
@@ -496,7 +496,7 @@ cursor: pointer;
 
 .picked {
     font-weight: 600;
-    color: rgba(235,106,106,1) !important;
+    color: #63506F !important;
 }
 
 

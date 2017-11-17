@@ -33,6 +33,10 @@
         </div>
         <a href="#" @click="go" id="create-groups">Slump me some groups</a>
     </section>
+    <footer id="social">
+        <a :href="social.fb"><img src="/static/social-fb.svg" alt="Share on Facebook"></a>
+        <a :href="social.tw"><img src="/static/social-twitter.svg" alt="Share on Twitter"></a>
+    </footer>
     </div>
 </template>
 
@@ -50,7 +54,11 @@ export default {
             groupName: true,
             groupLeader: false,
             groupType: 0,
-            groupSize: 2
+            groupSize: 2,
+            social: {
+                fb: `https://www.facebook.com/sharer/sharer.php?u=https%3A//webtools.itgonline.se/appar/v3/groupie/%23/`,
+                tw: `https://twitter.com/home?status=V%C3%A4rldens%20b%C3%A4sta%20gruppslumpare!%0Ahttps%3A//webtools.itgonline.se/appar/v3/groupie/%23/`
+            }
         }
     },
     methods: {
@@ -132,7 +140,7 @@ export default {
 
 #input .group-length {
         grid-area: group-length;
-        color: rgba(0,0,0,.4);
+        color: rgba(255,255,255,.8);
         padding: 1rem .5rem;
         font-size: .8rem;
 }
@@ -146,7 +154,7 @@ export default {
     box-sizing: border-box;
     font-size: .8rem;
     line-height: 30px;
-    height: 360px;
+    height: 361px;
     width: 400px;
     background: #fff url('/static/row.png');
     background-attachment: local;
@@ -168,7 +176,7 @@ export default {
 
 #input .group-name {
     grid-area: group-name;
-    background: rgba(0,0,0,.1);
+    background: #E6E6E6;
     display: flex;
     box-sizing: border-box;
     align-items: center;
@@ -177,7 +185,7 @@ export default {
 
 #input .group-leader {
     grid-area: group-leader;
-    background: rgba(0,0,0,.2);
+    background: #DBDBDB;
     display: flex;
     align-items: center;
     padding: 0 0 0 1rem;
@@ -186,19 +194,19 @@ export default {
 #input-group-name, #input-group-leader {
     width: 1.2rem;
     height: 1.2rem;
-    border: 1px solid rgba(0,0,0,.6);
+    border: 1px solid #4B4A57;
     border-radius: 3px;
     margin: 0 1rem 0 0;
 }
 
 #input-group-name.selected, #input-group-leader.selected {
-    background: #222 url('/static/icon-close-white.svg') no-repeat;
+    background: #4B4A57 url('/static/icon-close-white.svg') no-repeat;
     background-size: 100%;
 }
 
 #input #group-style-members {
     grid-area: group-style-members;
-    background: rgba(0,0,0,.3);
+    background: #CBCBCB;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -208,7 +216,7 @@ export default {
 
 #input #group-style-groups {
     grid-area: group-style-groups;
-    background: rgba(0,0,0,.3);
+    background: #CBCBCB;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -221,7 +229,7 @@ export default {
 }
 
 #group-style-members.selected, #group-style-groups.selected {
-    background: rgb(80, 80, 80) !important;
+    background: #4B4A57 !important;
     color: rgba(255,255,255,.8);
 }
 
@@ -235,7 +243,7 @@ export default {
 	position: absolute;
 	pointer-events: none;
 	border-color: rgba(0, 0, 0, 0);
-	border-top-color: rgb(80, 80, 80);
+	border-top-color: #4B4A57;
 	border-width: 6px;
 	margin-left: -6px;
 }
@@ -243,7 +251,7 @@ export default {
 
 #input .group-scale {
     grid-area: scale;
-    background: rgba(0,0,0,.4);
+    background: #ADADAD;
 }
 
 #input .group-scale #scale {
@@ -276,14 +284,14 @@ export default {
 }
 
 #input .group-scale #scale li span.selected {
-    background: #444;
+    background: #4B4A57;
     color: white;
 }
 
 
 #input #create-groups {
     grid-area: create-groups;
-    background: rgba(0,0,0,.7);
+    background: #4B4A57;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
     color: rgba(255,255,255,.9);
@@ -296,11 +304,37 @@ export default {
 }
 
 #input #create-groups:hover {
-    background: rgba(0,0,0,.8);
+    background: #313039;
 }
 
 #input #create-groups:active {
     background: rgba(0,0,0,1);
+}
+
+#social {
+    width: 12vw;
+    position: fixed;
+    bottom: .75rem;
+    right: .75rem;
+    text-align: right;
+}
+
+#social a {
+    opacity: .6;
+}
+
+#social a:hover {
+    opacity: .8;
+}
+
+#social a:active {
+    opacity: 1;
+}
+
+#social img {
+    width: 1.5rem;
+    margin: 0 .25rem;
+
 }
 
 </style>
