@@ -33,32 +33,27 @@
         </div>
         <a href="#" @click="go" id="create-groups">Slump me some groups</a>
     </section>
-    <footer id="social">
-        <a :href="social.fb"><img src="/static/social-fb.svg" alt="Share on Facebook"></a>
-        <a :href="social.tw"><img src="/static/social-twitter.svg" alt="Share on Twitter"></a>
-    </footer>
+    <social/>
     </div>
 </template>
 
 <script>
 
 import wtmenu from '@/components/Menu';
+import social from '@/components/Social';
 
 export default {
     name: 'wt-input',
     components: {
-        wtmenu
+        wtmenu,
+        social
     },
     data() {
         return {
             groupName: true,
             groupLeader: false,
             groupType: 0,
-            groupSize: 2,
-            social: {
-                fb: `https://www.facebook.com/sharer/sharer.php?u=https%3A//webtools.itgonline.se/appar/v3/groupie/%23/`,
-                tw: `https://twitter.com/home?status=V%C3%A4rldens%20b%C3%A4sta%20gruppslumpare!%0Ahttps%3A//webtools.itgonline.se/appar/v3/groupie/%23/`
-            }
+            groupSize: 2
         }
     },
     methods: {
@@ -309,32 +304,6 @@ export default {
 
 #input #create-groups:active {
     background: rgba(0,0,0,1);
-}
-
-#social {
-    width: 12vw;
-    position: fixed;
-    bottom: .75rem;
-    right: .75rem;
-    text-align: right;
-}
-
-#social a {
-    opacity: .6;
-}
-
-#social a:hover {
-    opacity: .8;
-}
-
-#social a:active {
-    opacity: 1;
-}
-
-#social img {
-    width: 1.5rem;
-    margin: 0 .25rem;
-
 }
 
 </style>
