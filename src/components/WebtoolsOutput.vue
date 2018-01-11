@@ -6,9 +6,7 @@
                 <article v-for="(group, index) in activeGroupie.groups" class="card-group">
                     <h1 class="card-title">
                         <span class="pick-member" @click="pickRandomMember">Slumpa namn inom grupp</span>
-                        <span v-if="group.name">{{ group.name }}</span>
-                        <span v-else>Grupp {{ index+1 }}</span>
-                        
+                        <span>{{ group.name }}</span>                        
                     </h1>
                     <draggable class="card-members" :options="{group:'member'}" @remove="removeCard">
                             <div class="member" v-for="member of group.members" :key="member" @click="removeMember">{{ member }}</div>
@@ -40,7 +38,7 @@ export default {
     methods:{
         proxy(e){
            if (e === `remix`) { this.remix(); }
-           if (e === `cross`) { this.cross = true; this.crossGroups(); }
+           if (e === `cross`) { this.crossGroups(); }
            if (e === `screenshot`) { this.takeScreenshot(); }
           // if (e === `link`) { this.createLink(); }
         },
@@ -87,7 +85,7 @@ export default {
             
             for(let group of groups){
 
-                let title = group.querySelector('.card-title span').innerHTML;
+                let title = group.querySelector('.card-title span:last-child').innerHTML;
                 let members = group.querySelectorAll('.member');
 
                 let tempGroup = {
@@ -139,7 +137,6 @@ export default {
         crossGroups(){
 
             let groups = this.collectGroups();
-            
             let crossGroupsArr = [];
             
             for(let n=0, m=groups.groups[0].groupMembers.length; n<m; n++){
@@ -160,6 +157,7 @@ export default {
             let data = {
                 groupType: 2,
                 groupName: true,
+                groupSize: groups.groups[0].groupMembers.length,
                 name: `Tvärgrupper`,
                 groups: crossGroupsArr
             }
@@ -192,117 +190,106 @@ export default {
         createLink(){
             let obj = this.collectGroups();
             let name = prompt(`Döp din Groupie`);
-            obj.groupieName = name;
-            
-            console.log(obj);
+            obj.groupieName = name; 
         }
     },
     computed: {
-        activeGroupie(){
-            
+        activeGroupie(){ 
             let groupie = this.$store.state.activeGroupie;
-
-            if(groupie.groupType === 0){
-                let results = generateGroupTypeMembers(groupie.nameList, groupie.groupSize, groupie.groupName, groupie.groupLeader);
-                return results;
-            }
-
-            if(groupie.groupType === 1){
-                let results = generateGroupTypeGroups(groupie.nameList, groupie.groupSize, groupie.groupName, groupie.groupLeader);
-                return results;
-            }
-
             if(groupie.groupType === 2){
                 return groupie;
+            } else {
+                let resp = generateGroups(groupie);
+                return resp;
             }
-
         }
     }
 };
 
 
 /* GLOBAL FUNCTIONS */
-function generateGroupTypeGroups(namesArr, groupSize, groupName, groupLeader){
+function generateGroups(groupie){
 
-    // Create Groupie Object
-    let activeGroup = {
-        name: null,
-        groups: []
-    };
+    let groupSize,
+        newArr = [];
+
+    if(groupie.groupType === 0) {
+        groupSize = (groupie.nameList.length / groupie.groupSize).toFixed();
+    } 
     
-    // Get Group Names
-    let randName = getGroupName();
-
-    // Do the shuffle
-    shuffle(namesArr);
-
-    // Get even chunks
-    let groups = chunk(namesArr, groupSize, true);
-    
-    // Create object
-    for (let group of groups) {
-
-        // if leader
-        if(groupLeader){
-            let slump = Math.floor(Math.random()*group.length);
-            group[slump] = `*${group[slump]}`;
-        };
-
-        let rName;
-        if(groupName) { rName = randName.pop() } else { rName = false }
-
-        let gr = {
-            name: rName,
-            members: group
-        };
-
-        activeGroup.groups.push(gr)
+    if(groupie.groupType === 1) {
+        groupSize = groupie.groupSize;
     }
 
-    return activeGroup;
-};
+    // Shuffle
+    shuffle(groupie.nameList);
 
+    // Loop the group
+    let groups = chunk(groupie.nameList, groupSize, true)
 
-function generateGroupTypeMembers(namesArr, groupSize, groupName, groupLeader){
-    
-    // Create Groupie Object
-    let activeGroup = {
-        name: null,
-        groups: []
-    };
-    
-    // Get Group Names
-    let randName = getGroupName();
-    
-    // Do the shuffle
-    shuffle(namesArr);
+    // Add name and leader
+    groups.forEach((group, i)=>{
 
-    // Get even chunks
-    let groups = chunk(namesArr, Math.ceil(namesArr.length/groupSize), true);
-    
-   
-    // Create object
-    for (let group of groups) {
- 
         // if leader
-        if(groupLeader){
-            let slump = Math.floor(Math.random()*group.length);
-            group[slump] = `*${group[slump]}`;
+        if(groupie.groupLeader){
+            let randNr = Math.floor(Math.random()*group.length);
+            group[randNr] = `*${group[randNr]}`; 
+        }
+
+        // Group name or number
+        function grName(){
+           if(groupie.groupName){
+               return getGroupName().pop()
+            } else { 
+                return `Grupp ${i+1}` 
+            }
         };
         
-        let rName;
-        if(groupName) { rName = randName.pop() } else { rName = false }
-
         let gr = {
-            name: rName,
-            members: group
-        };
+            name: grName(),
+            members: group 
+        }
 
-        activeGroup.groups.push(gr)
-    }
-    return activeGroup;
+        newArr.push(gr);
+
+    });
+
+    return {
+        name: null,
+        groups: newArr
+        }
 };
 
+
+// Fisher Yates shuffle
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+};
+
+
+// Group names
+function getGroupName() {
+	
+    let prefix = ["Super","Ninja","Bunny","Robo","Ultra","Power","Speedy","Crazy","Bionic","Space","Ghost","Kung-Fu","Happy","Smooth","Fire","Smart","Poop","Mega","Mad","Majestic","Mighty","Cool","Diamond","Fabulous","Fantastic","Furious","Golden","Silver","Iron","Magic","Ruby","Pink","Crypto","War","Spicy","Curly"];
+    let suffix = ["Zebras","Bananas","Rabbits","Zombies","Rangers","Sheriffs","Knights","Vikings","Ninjas","Turtles","Monkeys","Pants","Gardeners","Guardians","Masters","Astronauts","Experts","Poopers","Fighters","Stars","Criminals","Rollers","Pirates","Surfers","Warriors","Nerds","Scientists","Unicorns","Dolphins","Kittens"];
+            
+    let names = []; 
+
+    for(let i=0, j=prefix.length; i < j; i++){
+       
+        for(let k=0, l=suffix.length; k < l; k++){
+            names.push(`${prefix[i]} ${suffix[k]}`);
+        }      
+    }
+
+    return shuffle(names);
+};
 
 function chunk(a, n, balanced) {
     
@@ -344,38 +331,6 @@ function chunk(a, n, balanced) {
     return out;
 };
 
-
-// Fisher Yates shuffle
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        let temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    return array;
-};
-
-
-// Group names
-function getGroupName() {
-	
-    let prefix = ["Super","Ninja","Bunny","Robo","Ultra","Power","Speedy","Crazy","Bionic","Space","Ghost","Kung-Fu","Happy","Smooth","Fire","Smart","Poop","Mega","Mad","Majestic","Mighty","Cool","Diamond","Fabulous","Fantastic","Furious","Golden","Silver","Iron","Magic","Ruby","Pink","Crypto","War","Spicy","Curly"];
-    let suffix = ["Zebras","Bananas","Rabbits","Zombies","Rangers","Sheriffs","Knights","Vikings","Ninjas","Turtles","Monkeys","Pants","Gardeners","Guardians","Masters","Astronauts","Experts","Poopers","Fighters","Stars","Criminals","Rollers","Pirates","Surfers","Warriors","Nerds","Scientists","Unicorns","Dolphins","Kittens"];
-            
-    let names = []; 
-
-    for(let i=0, j=prefix.length; i < j; i++){
-       
-        for(let k=0, l=suffix.length; k < l; k++){
-            names.push(`${prefix[i]} ${suffix[k]}`);
-        }      
-    }
-
-    return shuffle(names);
-};
-
-
 </script>
 
 <style>
@@ -394,11 +349,11 @@ function getGroupName() {
 }
 
 .card-container {
-    max-width: 1000px;
+    width: 800px;
     margin: auto;
     display: grid;
     padding: 1rem;
-    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     grid-gap:1rem;
 }
 
